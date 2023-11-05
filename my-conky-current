@@ -1,0 +1,314 @@
+--[[
+#=====================================================================================
+#                               arcolinux
+# Date    : package-date
+# Author  : Erik Dubois at http://www.erikdubois.be
+# Version : package-version
+# License : Distributed under the terms of GNU GPL version 2 or later
+# Documentation : http://erikdubois.be/
+#======================================================================================
+# CONKY
+# For commands in conky.config section:
+# http://conky.sourceforge.net/config_settings.html
+#
+# For commands in conky.text section:
+# http://conky.sourceforge.net/variables.html
+#
+# A PDF with all variables is provided
+#=====================================================================================
+# FONTS
+# To avoid copyright infringements you will have to download
+# and install the fonts yourself sometimes.
+#=====================================================================================
+# GENERAL INFO ABOUT FONTS
+# Go and look for a nice font on sites like http://www.dafont.com/
+# Download and unzip - double click the font to install it (font-manager must be installed)
+# No font-manager then put fonts in ~/.fonts
+# Change the font name in the conky
+# The name can be known with a command in the terminal: fc-list | grep "part of name"
+# Change width and height of the conky according to font
+# Reboot your system or fc-cache -fv in terminal
+# Enjoy
+#=====================================================================================
+# FONTS FOR THIS CONKY
+# http://www.dafont.com/style-bats.font
+#======================================================================================
+# Titus Modifications (downloaded and editted Chris Titus' .configrc) 
+#======================================================================================
+# Changed time from Roboto to GE Inspira which is a base Conky Gotham Addon
+# Changed Drives from 2 to 3
+# Modified one_window_type from desktop to normal for KDE compatibility
+# Modified Ethernet settings
+# Modified Pink Lines to Bright Blue
+# Removed Extra symbols and incorrect formatting
+#======================================================================================
+# Cesare Modifications, November 2023;
+#======================================================================================
+# Several layout changes;
+# Configured full transparency (needs activation in Windows Tweaks too);
+# Added cpugraph and memgraph;
+# list of top cpu-hungy and memory-hungry processes resized to 5;
+# list of drives changed to match my laptop;
+# Colorization of CPU usage, RAM usage and free RAM values colorized based of thresholds 0-25% (green), 25-50% (yellow), 50-75% (orange), 75%-100% (red);
+# Same for cpubar and membar and all 3 disks' fs_bars;
+# added gradient colorization in cpugraph, memgraph, all drives' I/O Read and I/O Write, 
+# Added battery 1 status;
+# Possibility of launching conky several time, each on a different screen, see --xinerama-head=n command-line option;
+#======================================================================================
+]]
+
+conky.config = {
+
+	--Various settings
+
+	background = true, 							-- forked to background
+	cpu_avg_samples = 2,						-- The number of samples to average for CPU monitoring.
+	diskio_avg_samples = 10,					-- The number of samples to average for disk I/O monitoring.
+	double_buffer = true,						-- Use the Xdbe extension? (eliminates flicker)
+	if_up_strictness = 'address',				-- how strict if testing interface is up - up, link or address
+	net_avg_samples = 2,						-- The number of samples to average for net data
+	no_buffers = true,							-- Subtract (file system) buffers from used memory?
+	temperature_unit = 'celsius',				-- fahrenheit or celsius
+	text_buffer_size = 2048,					-- size of buffer for display of content of large variables - default 256
+	update_interval = 1,						-- update interval
+	imlib_cache_size = 0,                       -- disable image cache to get a new spotify cover per song
+
+
+	--Placement
+
+	alignment = 'top_left',					-- top_left,top_middle,top_right,bottom_left,bottom_middle,bottom_right,
+												-- middle_left,middle_middle,middle_right,none
+	--Arch Duoscreen
+	--gap_x = -1910,
+	gap_x = 15,									-- pixels between right or left border
+	gap_y = 0,									-- pixels between bottom or left border
+	minimum_height = 600,						-- minimum height of window
+	minimum_width = 475,						-- minimum width of window
+	maximum_width = 600,						-- maximum width of window
+
+	--Graphical
+
+	border_inner_margin = 10, 					-- margin between border and text
+	border_outer_margin = 5, 					-- margin between border and edge of window
+	border_width = 0, 							-- border width in pixels
+	default_bar_width = 80,					    -- default is 0 - full width
+	default_bar_height = 10,					-- default is 6
+	default_gauge_height = 25,					-- default is 25
+	default_gauge_width =40,					-- default is 40
+	default_graph_height = 40,					-- default is 25
+	default_graph_width = 0,					-- default is 0 - full width
+	default_shade_color = '#000000',			-- default shading colour
+	default_outline_color = '#000000',			-- default outline colour
+	draw_borders = false,						-- draw borders around text
+	draw_graph_borders = true,					-- draw borders around graphs
+	draw_shades = false,						-- draw shades
+	draw_outline = false,						-- draw outline
+	stippled_borders = 0,						-- dashing the border
+
+	--Textual
+
+	extra_newline = false,						-- extra newline at the end - for asesome's wiboxes
+	format_human_readable = true,				-- KiB, MiB rather then number of bytes
+	font = 'Roboto Mono:size=10',  				-- font for complete conky unless in code defined
+	max_text_width = 0,							-- 0 will make sure line does not get broken if width too smal
+	max_user_text = 16384,						-- max text in conky default 16384
+	override_utf8_locale = true,				-- force UTF8 requires xft
+	short_units = true,							-- shorten units from KiB to k
+	top_name_width = 21,						-- width for $top name value default 15
+	top_name_verbose = false,					-- If true, top name shows the full command line of  each  process - Default value is false.
+	uppercase = false,							-- uppercase or not
+	use_spacer = 'none',						-- adds spaces around certain objects to align - default none
+	use_xft = true,								-- xft font - anti-aliased font
+	xftalpha = 1,								-- alpha of the xft font - between 0-1
+
+	--Windows
+
+	own_window = true,							-- create your own window to draw
+	own_window_argb_value = 100,			    -- real transparency - composite manager required 0-255
+	own_window_argb_visual = true,				-- use ARGB - composite manager required
+	own_window_colour = '#000000',				-- set colour if own_window_transparent no
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',  -- if own_window true - just hints - own_window_type sets it
+	own_window_transparent = false,				-- if own_window_argb_visual is true sets background opacity 0%
+	own_window_title = 'system_conky',			-- set the name manually  - default conky "hostname"
+	own_window_type = 'normal',				-- if own_window true options are: normal/override/dock/desktop/panel
+
+   -- override original value for complete transparency;
+   own_window_argb_value = 0,
+
+	--Colours
+
+	default_color = '#D9DDE2',  				-- default color and border color
+	color1 = '#FF0000',
+	color2 = '#3e5570',
+	color3 = '#cccccc',
+	color4 = '#D9BC83',
+	color5 = '#00BFFF',                         --teal
+	color6 = '#FFFFFF',                         --white
+
+	--Signal Colours
+	color7 = '#C0FF00',  						--green
+	color8 = '#FFA726',  						--orange
+	color9 = '#F1544B',  						--firebrick
+
+   green  = '#28B463',
+	yellow = '#F1544B',
+   orange = '#DC7633',
+   red    = '#E74C3C',
+
+   -- override original value of variable names for better contrast;
+	color2 = '#5D6D7E',
+   -- commented, use from the command-line parameter --xinerama-head=n;
+   -- e.g.: conky --xinerama-head=1 -c /home/cesare/.config/conky/my-conky-current 2>&1 > /dev/null
+   --       conky --xinerama-head=2 -c /home/cesare/.config/conky/my-conky-current 2>&1 > /dev/null
+   -- xinerama_head = 0  -- 1, 3: EIZO, left-most screen, 2: LG, middle screen, 0: laptop, right-most screen;
+
+    --Lua
+};
+
+conky.text = [[
+# date & time;
+# forked configuration file;
+#${alignr}${font Noto Sans:size=8}${color2}[zorin16]
+${color6}${voffset 4}${font GE Inspira:size=36}${alignc}${time %T}${font}${color}
+${color6}${voffset 4}${font GE Inspira:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}${color}
+#
+#
+# system;
+${color5}${font Roboto:size=10}${voffset 2}S Y S T E M   ${hr 2}${font}${color}
+${color2}Hostname:${color} ${alignr}${nodename}
+${color2}OS: $alignr ${color3}${execi 6000 lsb_release -d| awk '{$1=""; print $0}'}
+${color2}Kernel: $alignr ${color3} $kernel
+${color2}Uptime:${color} ${alignr}${uptime}
+#
+#
+# processors;
+${color5}${font Roboto:size=10}P R O C E S S O R S  ${hr 2}${font}${color}
+${color2}Model: ${color}${execi 6000 lscpu | grep 'Model name:' | awk '{print $3 " " $4 " " $5}'}$alignr${color2}Architecture: ${color}${execi 6000 lscpu | grep 'Architecture' | awk '{$1=""; print $0}'}
+#
+${color2}Number of sockets: ${color}${execi 6000 lscpu | grep 'Socket(s):' | awk '{$1=""; print $0}'}$alignr${color2}Cores per socket: ${color}$alignr${execi 6000 lscpu | grep 'Core(s)' | awk '{$1=$2=$3=""; print $0}'}
+#
+${color2}Threads per core: ${color}${execi 6000 lscpu | grep 'Thread(s)' | awk '{$1=$2=$3=""; print $0}'}$alignr${color2}Number of logical cores: ${color}$alignr${execi 6000 lscpu | grep 'CPU(s):' | head -n 1 | awk '{$1=""; print $0}'}
+#
+${color2}CPU Freq:${color} $alignr${freq}MHz
+${color2}CPU Temp:${color} $alignr ${acpitemp}°C
+# no color distinction;
+#${color2}CPU Usage: ${color} $alignr ${cpu}% 
+# colorized value depending on thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}CPU Usage: ${if_match ${cpu}<25}${color green}${else}${if_match ${cpu}<50}${color yellow}${else}${if_match ${cpu}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpu}% 
+#
+# whole cpu percentage: one color for the bar;
+#${color}${cpubar cpu0 15,600}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color}${if_match ${cpu}<25}${color green}${else}${if_match ${cpu}<50}${color yellow}${else}${if_match ${cpu}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpubar cpu0 15,600}
+#
+# whole cpu percentage: one color for the bar;
+#${color2}CPU Core 1:${color} ${alignr}${offset -10}${cpu cpu1}% ${alignr}${cpubar cpu1 10, 300}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}CPU Core 1:${color}${if_match ${cpu cpu1}<25}${color green}${else}${if_match ${cpu cpu1}<50}${color yellow}${else}${if_match ${cpu cpu1}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpubar cpu1 10,300}
+#
+# whole cpu percentage: one color for the bar;
+#${color2}CPU Core 2:${color} ${alignr}${offset -10}${cpu cpu2}% ${alignr}${cpubar cpu2 10, 300}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}CPU Core 2:${color}${if_match ${cpu cpu2}<25}${color green}${else}${if_match ${cpu cpu2}<50}${color yellow}${else}${if_match ${cpu cpu2}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpubar cpu2 10,300}
+#
+# whole cpu percentage: one color for the bar;
+#${color2}CPU Core 3:${color} ${alignr}${offset -10}${cpu cpu3}% ${alignr}${cpubar cpu3 10, 300}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}CPU Core 3:${color}${if_match ${cpu cpu3}<25}${color green}${else}${if_match ${cpu cpu3}<50}${color yellow}${else}${if_match ${cpu cpu3}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpubar cpu3 10,300}
+#
+# whole cpu percentage: one color for the bar;
+#${color2}CPU Core 4:${color} ${alignr}${offset -10}${cpu cpu4}% ${alignr}${cpubar cpu4 10, 300}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}CPU Core 4:${color}${if_match ${cpu cpu4}<25}${color green}${else}${if_match ${cpu cpu4}<50}${color yellow}${else}${if_match ${cpu cpu4}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${cpubar cpu4 10,300}
+#
+# graphs with gradient;
+${color}${cpugraph 20,600 7fff00 ff0000 -t}
+#
+#
+# processes;
+${color5}${font Roboto:size=10}P R O C E S S E S  ${hr 2}${font}${color}
+${color2}Processes:$color $processes  ${color2}Running:$color $running_processes $alignr ${color2}Load avg: ${color} $loadavg
+# top cpu-hungry processes;
+${color7}Top Processes ${goto 350}CPU% ${goto 450}Mem% 
+${color}${top name 1} ${goto 350}${top cpu 1} ${goto 450}${top mem 1}
+${color}${top name 2} ${goto 350}${top cpu 2} ${goto 450}${top mem 2}
+${color}${top name 3} ${goto 350}${top cpu 3} ${goto 450}${top mem 3}
+${color}${top name 4} ${goto 350}${top cpu 4} ${goto 450}${top mem 4}
+${color}${top name 5} ${goto 350}${top cpu 5} ${goto 450}${top mem 5}
+#${color}${top name 6} ${goto 350}${top cpu 6} ${goto 450}${top mem 6}
+#
+#
+# memory;
+${color5}${font Roboto:size=10}M E M O R Y   ${hr 2}${font}${color}
+#${color2}Usage ${color3}$memperc%${goto 150}${color2}Total ${color3}$memmax
+# colorized value depending on thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}Usage ${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}$memperc%${goto 150}${color2}Total ${color3}$memmax
+#${color2}Used ${color3}$mem${goto 150}${color2}Free ${color3}$memfree   ${color}${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${membar 10,300}
+${color2}Used ${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}$mem${goto 150}${color2}Free ${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}$memfree   ${color}${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${membar 10,300}
+#
+# mem percentage: one color for the bar;
+#${color}${membar 10,600}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+#${color}${if_match ${memperc}<25}${color green}${else}${if_match ${memperc}<50}${color yellow}${else}${if_match ${memperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 0}${alignr}${membar 10,600}
+${color}${memgraph 20,600 7fff00 ff0000 -t}
+#
+# swap percentage: one color for the bar;
+#${color2}Swap Usage:$color $swap/$swapmax - $swapperc%${alignr}${swapbar 10, 300}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color2}Swap Usage:$color $swap/$swapmax - $swapperc%${alignr}${goto 80}${color}${if_match ${swapperc}<25}${color green}${else}${if_match ${swapperc}<50}${color yellow}${else}${if_match ${swapperc}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 80}${alignr}${swapbar 10,300}
+#
+# top memory-hyngry processes;
+${color7}Top Processes ${goto 350}CPU% ${goto 450}Mem%
+${color}${top_mem name 1}${alignr}${goto 350}${top_mem cpu 1} ${goto 450}${top_mem mem 1}
+${color}${top_mem name 2}${alignr}${goto 350}${top_mem cpu 2} ${goto 450}${top_mem mem 2}
+${color}${top_mem name 3}${alignr}${goto 350}${top_mem cpu 3} ${goto 450}${top_mem mem 3}
+${color}${top_mem name 4}${alignr}${goto 350}${top_mem cpu 4} ${goto 450}${top_mem mem 4}
+${color}${top_mem name 5}${alignr}${goto 350}${top_mem cpu 5} ${goto 450}${top_mem mem 5}
+#${color}${top_mem name 6}${alignr}${goto 350}${top_mem cpu 6} ${goto 450}${top_mem mem 6}
+#
+#
+# disks;
+${color5}${font Roboto:size=10}D R I V E S   ${hr 2}${font}${color}
+# 1st drive: one color for the bar;
+#${color7}/ ${color} ${alignr}${color2}Used ${color}${fs_used /} ${color2}Free ${color}${fs_free /} ${color2}Total ${color}${fs_size /} ${alignr}${color}${fs_bar 6,300 /}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color7}/ ${color} ${alignr}${color2}Used ${color}${fs_used /} ${color2}Free ${color}${fs_free /} ${color2}Total ${color}${fs_size /} ${goto 80}${color}${if_match ${fs_used_perc /}<25}${color green}${else}${if_match ${fs_used_perc /}<50}${color yellow}${else}${if_match ${fs_used_perc /}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 80}${alignr}${fs_bar 6,300 /}
+#
+# graphs with gradient;
+${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sda1}${alignr}${diskiograph_read /dev/sda1 15,300 7fff00 ff0000 -t}
+${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sda1}${alignr}${diskiograph_write /dev/sda1 15,300 7fff00 ff0000 -t}
+#
+# 2nd drive: one color for the bar;
+#${color7}/media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38${color} ${fs_used /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}/${fs_free /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}/${fs_size /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38} ${alignr}${fs_bar 6,100 /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color7}/media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38${color} ${fs_used /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}/${fs_free /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}/${fs_size /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38} ${goto 80}${color}${if_match ${fs_used_perc /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}<25}${color green}${else}${if_match ${fs_used_perc /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}<50}${color yellow}${else}${if_match ${fs_used_perc /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 80}${alignr}${fs_bar 6,100 /media/cesare/1f6af2b9-97d6-4ea9-a89e-2a17d439bc38}
+#
+# graphs with gradient;
+${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sdb1}${alignr}${diskiograph_read /dev/sdb1 15,300 7fff00 ff0000 -t}
+${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sdb1}${alignr}${diskiograph_write /dev/sdb1 15,300 7fff00 ff0000 -t}
+#
+# 3rd drive: one color for the bar;
+#${color7}/media/cesare/Seagate-Backup-Plus-Drive${color} ${fs_used /media/cesare/Seagate-Backup-Plus-Drive}/${fs_free /media/cesare/Seagate-Backup-Plus-Drive}/${fs_size /media/cesare/Seagate-Backup-Plus-Drive} ${alignr}${fs_bar 6,160 /media/cesare/Seagate-Backup-Plus-Drive}
+# colorized bar depending on the value thresholds: 0-25% 25-50% 50-75% 75-100%;
+${color7}/media/cesare/Seagate-Backup-Plus-Drive${color} ${fs_used /media/cesare/Seagate-Backup-Plus-Drive}/${fs_free /media/cesare/Seagate-Backup-Plus-Drive}/${fs_size /media/cesare/Seagate-Backup-Plus-Drive} ${goto 80}${color}${if_match ${fs_used_perc /media/cesare/Seagate-Backup-Plus-Drive}<25}${color green}${else}${if_match ${fs_used_perc /media/cesare/Seagate-Backup-Plus-Drive}<50}${color yellow}${else}${if_match ${fs_used_perc /media/cesare/Seagate-Backup-Plus-Drive}<75}${color orange}${else}${color red}${endif}${endif}${endif}${goto 0}${offset 80}${alignr}${fs_bar 6,180 /media/cesare/Seagate-Backup-Plus-Drive}
+#
+# graphs with gradient;
+${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sdc2}${alignr}${diskiograph_read /dev/sdc2 15,300 7fff00 ff0000 -t}
+${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sdc2}${alignr}${diskiograph_write /dev/sdc2 15,300 7fff00 ff0000 -t}
+#
+#
+# network;
+${color5}${color5}${font Roboto:size=10}N E T W O R K   ${hr 2}${font}${color}
+${color2}Interface: ${color}enp0s25${goto 200}${color2}  IP Address: ${color}${addrs enp0s25}
+#
+# stacked bar graphs;
+#${color2}Eth Up:${color} ${alignr}${offset -10$}${upspeed enp0s25}${alignr}${upspeedgraph enp0s25 15,300 7fff00 ff0000 -t}
+#${color2}Eth Down:${color} ${alignr}${offset -10$}${downspeed enp0s25}${alignr}${downspeedgraph enp0s25 15,300 7fff00 ff0000 -t}
+# aligned bar graphs;
+${color2}Eth Up:${color} ${upspeed enp0s25}/s${alignr}${color2}Eth Down:${color} ${downspeed enp0s25}/s
+${upspeedgraph enp0s25 20,290 7fff00 ff0000 -t}${alignr}${downspeedgraph enp0s25 20,290 7fff00 ff0000 -t}
+${color2}Total Up:${color} ${totalup enp0s25}  ${color2}Total Down:${color} ${totaldown enp0s25}
+#
+# battery;
+${color7}Battery:${color}  ${exec acpi -b | awk '{if ("1:" == $2) print "State: " $3 " Capacity: "$4}'}
+]];
